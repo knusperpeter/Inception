@@ -1,0 +1,9 @@
+services:
+  mariadb:
+    build: ./mariadb
+    ports:
+      - 3306
+  wordpress:
+    build: ./wordpress
+    expose:
+      - 9000
