@@ -1,15 +1,30 @@
 FROM debian:latest
 
-RUN	apt update \
-	&& apt install -y \
+# Install dependencies
+RUN	apt update && apt install -y \
+	curl \
 	wordpress \
-	php \
-	php-fpm \
-	php-mysql \
+	tar \
+	wget \
+	php8.2-fpm \
+	php8.2-mysql \
 	&& rm -rf /var/lib/apt/lists/*
 
-CMD	["sh", "-c", "\
-	systemctl enable php8.3-fpm && \
-	systemctl start php8.3-fpm && \
-	systemctl status php8.3-fpm \
-	"]
+# Download and extract WordPress
+RUN	curl -o /tmp/wordpress.tar.gz -SL https://wordpress.org/latest.tar.gz \
+	&& tar -xzf /tmp/wordpress.tar.gz -C /var/www/html --strip-components=1 \
+	&& rm /tmp/wordpress.tar.gz
+
+# Copy WordPress configuration
+#COPY wp-config.php /var/www/html/wp-config.php
+
+# Set permissions for WordPress
+RUN chown -R www-data:www-data /var/www/html 
+
+# Expose port 9000 (PHP-FPM)
+EXPOSE 9000
+
+# Start PHP-FPM in the foreground
+CMD ["php-fpm8.2", "-F"]
+
+#CMD	["php", "--nodaemonize"]

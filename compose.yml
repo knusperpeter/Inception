@@ -1,9 +1,21 @@
 services:
   mariadb:
     build: ./mariadb
+    container_name: mariadb
     ports:
       - 3306
+    restart: unless-stopped
+
   wordpress:
     build: ./wordpress
+    container_name: wordpress
     expose:
       - 9000
+    restart: unless-stopped
+
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    expose:
+      - 443
+    restart: unless-stopped
