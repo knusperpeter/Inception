@@ -1,10 +1,13 @@
 services:
+
   mariadb:
     build: ./mariadb
     container_name: mariadb
     ports:
       - 3306
     restart: unless-stopped
+
+
 
   wordpress:
     build: ./wordpress
@@ -13,9 +16,31 @@ services:
       - 9000
     restart: unless-stopped
 
+
+
   nginx:
     build: ./nginx
     container_name: nginx
-    expose:
-      - 443
+    ports:
+      - "443:443"
     restart: unless-stopped
+
+
+
+volumes:
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/caigner/data/wordpress
+  mariadb:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/caigner/data/mariadb
+
+
+
+#networks:
