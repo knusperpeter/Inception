@@ -6,8 +6,10 @@ services:
     ports:
       - 3306
     restart: unless-stopped
-
-
+    networks:
+      - docker-network
+    volumes:
+      - mariadb:/var/lib/mysql
 
   wordpress:
     build: ./wordpress
@@ -15,7 +17,10 @@ services:
     expose:
       - 9000
     restart: unless-stopped
-
+    networks:
+      - docker-network
+    volumes:
+      - wordpress:/var/www/html
 
 
   nginx:
@@ -24,16 +29,19 @@ services:
     ports:
       - "443:443"
     restart: unless-stopped
-
+    networks:
+      - docker-network
 
 
 volumes:
+
   wordpress:
     driver: local
     driver_opts:
       type: none
       o: bind
       device: /home/caigner/data/wordpress
+
   mariadb:
     driver: local
     driver_opts:
@@ -43,4 +51,7 @@ volumes:
 
 
 
-#networks:
+networks:
+  docker-network:
+    name: inception-net
+    driver: bridge

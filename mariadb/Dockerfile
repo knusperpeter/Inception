@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:bookworm-slim
 
 # Install MariaDB
 RUN	apt update && apt install -y \
@@ -9,7 +9,7 @@ RUN	apt update && apt install -y \
 #COPY init.sql /docker-entrypoint-initdb.d/init.sql
 
 # Expose port 3306
-#EXPOSE 3306
+EXPOSE 3306
 
 # create or copy configs
 
