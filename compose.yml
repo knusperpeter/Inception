@@ -6,10 +6,10 @@ services:
     ports:
       - 3306
     restart: unless-stopped
-    networks:
-      - docker-network
-    volumes:
-      - mariadb:/var/lib/mysql
+#    networks:
+#      - docker-network
+#    volumes:
+#      - mariadb:/var/lib/mysql
 
   wordpress:
     build: ./wordpress
@@ -17,10 +17,10 @@ services:
     expose:
       - 9000
     restart: unless-stopped
-    networks:
-      - docker-network
-    volumes:
-      - wordpress:/var/www/html
+#    networks:
+#      - docker-network
+#    volumes:
+#      - wordpress:/var/www/html
 
 
   nginx:
@@ -29,8 +29,8 @@ services:
     ports:
       - "443:443"
     restart: unless-stopped
-    networks:
-      - docker-network
+#    networks:
+#      - docker-network
 
 
 volumes:
