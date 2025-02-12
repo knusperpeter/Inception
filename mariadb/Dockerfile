@@ -6,7 +6,7 @@ RUN	apt update && apt install -y \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Copy initialization script
-#COPY init.sql /docker-entrypoint-initdb.d/init.sql
+COPY init.sql /docker-entrypoint-initdb.d/init.sql
 
 # Expose port 3306
 EXPOSE 3306

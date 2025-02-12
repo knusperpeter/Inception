@@ -3,13 +3,18 @@ services:
   mariadb:
     build: ./mariadb
     container_name: mariadb
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
       - 3306
     restart: unless-stopped
-#    networks:
-#      - docker-network
-#    volumes:
-#      - mariadb:/var/lib/mysql
+    networks:
+      - docker-network
+    volumes:
+      - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   wordpress:
     build: ./wordpress
@@ -17,10 +22,10 @@ services:
     expose:
       - 9000
     restart: unless-stopped
-#    networks:
-#      - docker-network
-#    volumes:
-#      - wordpress:/var/www/html
+    networks:
+      - docker-network
+    volumes:
+      - ./wordpress/www.conf:/usr/local/etc/php-fpm.d/www.conf
 
 
   nginx:
@@ -29,9 +34,11 @@ services:
     ports:
       - "443:443"
     restart: unless-stopped
-#    networks:
-#      - docker-network
-
+    networks:
+      - docker-network
+    volumes:
+        - ./nginx/ssl/cert.pem:/etc/ssl/certs/cert.pem
+        - ./nginx/ssl/key.pem:/etc/ssl/private/key.pem
 
 volumes:
 
