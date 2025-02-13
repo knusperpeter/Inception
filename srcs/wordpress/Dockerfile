@@ -17,9 +17,11 @@ RUN	curl -o /tmp/wordpress.tar.gz -SL https://wordpress.org/latest.tar.gz \
 
 # Copy WordPress configuration
 #COPY wp-config.php /var/www/html/wp-config.php
-
+COPY www.conf /etc/php/8.2/fpm/pool.d/www.conf
 # Set permissions for WordPress
 RUN chown -R www-data:www-data /var/www/html 
+
+RUN mkdir -p /run/php
 
 # Expose port 9000 (PHP-FPM)
 EXPOSE 9000

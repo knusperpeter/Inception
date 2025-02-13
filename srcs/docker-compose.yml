@@ -8,37 +8,48 @@ services:
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    ports:
-      - 3306
     restart: unless-stopped
     networks:
-      - docker-network
+      - inception-net
     volumes:
+      - mariadb:/var/lib/mysql
       - ./mariadb/init.sql:/docker-entrypoint-initdb.d/init.sql
 
   wordpress:
     build: ./wordpress
     container_name: wordpress
+    environment:
+      WORDPRESS_DB_HOST: mariadb
+      WORDPRESS_DB_USER: ${MYSQL_USER}
+      WORDPRESS_DB_PASSWORD: ${MYSQL_PASSWORD}
+      WORDPRESS_DB_NAME: ${MYSQL_DATABASE}
+    depends_on:
+      - mariadb
     expose:
-      - 9000
+      - "9000"
     restart: unless-stopped
     networks:
-      - docker-network
+      - inception-net
     volumes:
+      - wordpress:/var/www/html
       - ./wordpress/www.conf:/usr/local/etc/php-fpm.d/www.conf
 
 
   nginx:
-    build: ./nginx
+    build:
+      context: ./nginx
     container_name: nginx
     ports:
       - "443:443"
+    depends_on:
+      - wordpress
     restart: unless-stopped
     networks:
-      - docker-network
+      - inception-net
     volumes:
-        - ./nginx/ssl/cert.pem:/etc/ssl/certs/cert.pem
-        - ./nginx/ssl/key.pem:/etc/ssl/private/key.pem
+      - wordpress:/var/www/html
+      - ./nginx/ssl/cert.pem:/etc/ssl/certs/cert.pem
+      - ./nginx/ssl/key.pem:/etc/ssl/private/key.pem
 
 volumes:
 
@@ -47,18 +58,16 @@ volumes:
     driver_opts:
       type: none
       o: bind
-      device: /home/caigner/data/wordpress
+      device: /home/${USER}/data/wordpress
 
   mariadb:
     driver: local
     driver_opts:
       type: none
       o: bind
-      device: /home/caigner/data/mariadb
+      device: /home/${USER}/data/mariadb
 
 
 
 networks:
-  docker-network:
-    name: inception-net
-    driver: bridge
+  inception-net:
