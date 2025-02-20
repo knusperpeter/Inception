@@ -7,13 +7,13 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Create SSL directory
-RUN mkdir -p /etc/nginx/ssl
+RUN mkdir -p /etc/nginx/ssl/private
 
 # Generate self-signed certificate for testing
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
     -keyout /etc/ssl/private/key.pem \
     -out /etc/ssl/certs/cert.pem \
-    -subj "/C=FR/ST=IDF/L=Paris/O=42/CN=localhost"
+#    -subj "/C=FR/ST=IDF/L=Paris/O=42/CN=${DOMAIN_NAME}"
 
 # Create directory for WordPress files
 RUN mkdir -p /var/www/html

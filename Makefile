@@ -33,22 +33,22 @@ preclean:
 # Build and start containers
 build: preclean
 	@echo "${GREEN}Building and starting containers...${NC}"
-	@docker-compose -f ${COMPOSE_FILE} up --build -d
+	@docker compose -f ${COMPOSE_FILE} up --build -d
 
 # Stop containers
 stop:
 	@echo "${GREEN}Stopping containers...${NC}"
-	@docker-compose -f ${COMPOSE_FILE} stop
+	@docker compose -f ${COMPOSE_FILE} stop
 
 # Start containers
 start:
 	@echo "${GREEN}Starting containers...${NC}"
-	@docker-compose -f ${COMPOSE_FILE} start
+	@docker compose -f ${COMPOSE_FILE} start
 
 # Remove containers and networks
 down:
 	@echo "${GREEN}Removing containers and networks...${NC}"
-	@docker-compose -f ${COMPOSE_FILE} down
+	@docker compose -f ${COMPOSE_FILE} down
 
 # Deep clean (containers, networks, volumes, images)
 fclean: down
