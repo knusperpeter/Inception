@@ -1,5 +1,5 @@
 #use daemon here?
-FROM debian:bullseye
+FROM debian:bullseye-slim
 
 RUN apt update && \
     apt upgrade -y && \
