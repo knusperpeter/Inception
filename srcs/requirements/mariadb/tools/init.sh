@@ -1,12 +1,10 @@
 #!/bin/bash
+set -e
 
-cat <<EOF > /etc/mysql/init.sql
-CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE};
-CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%' WITH GRANT OPTION;
-FLUSH PRIVILEGES;
-EOF
+# Initialize database if not exists
+if [ ! -d "/var/lib/mysql/mysql" ]; then
+    echo "Initializing database..."
+    mysql_install_db --user=mysql --datadir=/var/lib/mysql
+fi
 
-mysql_upgrade --user=mysql --datadir=/var/lib/mysql
-
-exec mysqld --init-file=/etc/mysql/init.sql
+echo "Database ready"

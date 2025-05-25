@@ -1,22 +1,22 @@
-# Using Debian
 FROM debian:bullseye
 
 # Install MariaDB
-RUN apt-get update && apt-get install -y \
-	mariadb-server && \
+RUN apt update && \
+    apt install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/*
 
 # Copy custom my.conf
-COPY /conf/my.cnf /etc/mysql/mariadb.conf.d/my.cnf
-COPY /tools/init.sh .
+COPY ./conf/my.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./tools/init.sh /docker-entrypoint-initdb.d/
 
-RUN mkdir /run/mysqld && chmod +x init.sh
+RUN mkdir -p /run/mysqld && \
+	chown -R mysql:mysql /run/mysqld && \
+	chmod 777 /run/mysqld
 
-ENTRYPOINT ["./init.sh"]
 
 # Volumes and ports
-#VOLUME /var/lib/mysql
-#EXPOSE 3306
+VOLUME /var/lib/mysql
+EXPOSE 3306
 
 # Start MariaDB
-#CMD ["mysqld_safe"]
+CMD ["sh", "-c", "exec mysqld --user=mysql --console --init-file=/docker-entrypoint-initdb.d/init.sh"]
