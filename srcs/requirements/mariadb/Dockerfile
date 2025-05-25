@@ -7,11 +7,15 @@ RUN apt update && \
 
 # Copy custom my.conf
 COPY ./conf/my.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
-COPY ./tools/init.sh /docker-entrypoint-initdb.d/
+COPY ./tools/init.sh /usr/local/bin/init.sh
+
+RUN chmod +x  /usr/local/bin/init.sh
 
 RUN mkdir -p /run/mysqld && \
 	chown -R mysql:mysql /run/mysqld && \
-	chmod 777 /run/mysqld
+	chmod 777 /run/mysqld && \
+    chown -R mysql:mysql /var/lib/mysql
+	
 
 
 # Volumes and ports
@@ -19,4 +23,4 @@ VOLUME /var/lib/mysql
 EXPOSE 3306
 
 # Start MariaDB
-CMD ["sh", "-c", "exec mysqld --user=mysql --console --init-file=/docker-entrypoint-initdb.d/init.sh"]
+CMD ["/usr/local/bin/init.sh"]
