@@ -8,16 +8,17 @@ services:
       - MYSQL_DATABASE=${MARIADB_DATABASE}
       - MYSQL_USER=${MARIADB_USER}
       - MYSQL_PASSWORD=${MARIADB_PASSWORD}
+      - MYSQL_ADMIN_PASSWORD=${MARIADB_ADMIN_PASSWORD}
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
       - inception
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+#      interval: 5s
+#      timeout: 5s
+#      retries: 5
 
   nginx:
     build: ./requirements/nginx
@@ -30,6 +31,7 @@ services:
       - wordpress
     networks:
       - inception
+    restart: unless-stopped
 
   wordpress:
     build: ./requirements/wordpress
@@ -45,6 +47,7 @@ services:
       - WORDPRESS_DB_USER=${MARIADB_USER}
       - WORDPRESS_DB_PASSWORD=${MARIADB_PASSWORD}
       - WORDPRESS_DB_NAME=${MARIADB_DATABASE}
+    restart: unless-stopped
 
 
 volumes:
@@ -52,14 +55,14 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/${USER}/data/mariadb
+      device: /home/knusperpeter/data/mariadb
       o: bind
 
   wordpress_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/${USER}/data/wordpress
+      device: /home/knusperpeter/data/wordpress
       o: bind
 
 
