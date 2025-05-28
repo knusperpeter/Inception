@@ -28,9 +28,12 @@ FROM debian:bullseye-slim
 RUN apt update && \
 	apt upgrade -y && \
     apt install -y mariadb-server && \
-    rm -rf /var/lib/apt/lists/* && \
-    mkdir -p /var/log/mysql && \
-    chown -R mysql:mysql /var/log/mysql
+    rm -rf /var/lib/apt/lists/*
+	# && \
+#    mkdir -p /var/log/mysql && \
+#    chown -R mysql:mysql /var/log/mysql
+
+RUN rm -rf /var/lib/mysql/*
 
 # Copy configuration and init script
 COPY ./conf/my.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
