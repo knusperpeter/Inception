@@ -47,3 +47,5 @@ EOSQL
     # Shutdown temporary server
     mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 fi
+
+mysqld --user=mysql --console
