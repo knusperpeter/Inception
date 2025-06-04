@@ -66,8 +66,8 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /Users/chris/data/mariadb
-      #device: /home/knusperpeter/data/mariadb
+      #device: /Users/chris/data/mariadb
+      device: /home/knusperpeter/data/mariadb
       o: bind
 
   wordpress_data:
@@ -75,8 +75,8 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /Users/chris/data/wordpress
-      #device: /home/knusperpeter/data/wordpress
+      #device: /Users/chris/data/wordpress
+      device: /home/knusperpeter/data/wordpress
       o: bind
 
 
