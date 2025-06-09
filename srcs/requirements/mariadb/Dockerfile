@@ -5,9 +5,6 @@ RUN apt update && \
 	apt upgrade -y && \
     apt install -y mariadb-server && \
     rm -rf /var/lib/apt/lists/*
-	# && \
-#    mkdir -p /var/log/mysql && \
-#    chown -R mysql:mysql /var/log/mysql
 
 RUN rm -rf /var/lib/mysql/*
 
@@ -22,8 +19,6 @@ RUN mkdir -p /run/mysqld && \
     chown -R mysql:mysql /var/lib/mysql && \
     chmod +x /usr/local/bin/init.sh
 
-VOLUME /var/lib/mysql
-EXPOSE 3306
-
 # Combined initialization and server start
-CMD ["/usr/local/bin/init.sh"]
+ENTRYPOINT ["/usr/local/bin/init.sh"]
+CMD ["mysqld", "--user=mysql", "--console"]
