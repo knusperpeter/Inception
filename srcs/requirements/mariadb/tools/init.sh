@@ -1,11 +1,6 @@
 #!/bin/bash
 set -e
 
-echo "Contents of /var/lib/mysql:"
-ls -la /var/lib/mysql/
-echo "Checking if /var/lib/mysql/mysql exists:"
-[ -d "/var/lib/mysql/mysql" ] && echo "EXISTS" || echo "DOES NOT EXIST"
-
 # Only initialize if database doesn't exist
 if [ ! -d "/var/lib/mysql/mysql" ]; then
     echo "Initializing database..."
@@ -20,9 +15,14 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
         sleep 1
     done
 
+	if [ ! -S "/run/mysqld/mysqld.sock" ]; then
+		echo "ERROR: MariaDB failed to start within 30 seconds"
+		exit 1
+	fi
+
     # Create users and database
     mysql -uroot <<-EOSQL
-        -- Set root password (MariaDB 10.5+ compatible)
+        -- Set root password
         ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}';
         
         -- Create WordPress database
@@ -31,10 +31,6 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
         -- Create WordPress user with remote access
         CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';
         GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%';
-        
-        -- Create admin user with remote access
-        CREATE USER IF NOT EXISTS 'db_manager'@'%' IDENTIFIED BY '${MYSQL_ADMIN_PASSWORD}';
-        GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO 'db_manager'@'%' WITH GRANT OPTION;
         
         -- Clean up
         DELETE FROM mysql.user WHERE User='';

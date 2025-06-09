@@ -1,4 +1,4 @@
-.PHONY:    all build up down clean fclean re
+.PHONY:    all build up down clean fclean dead
 
 all:    build up
 
