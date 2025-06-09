@@ -7,11 +7,10 @@ services:
     expose:
       - "3306"
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_ADMIN_PASSWORD=${MYSQL_ADMIN_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:?MYSQL_DATABASE is required}
+      - MYSQL_USER=${MYSQL_USER:?MYSQL_USER is required}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:?MYSQL_PASSWORD is required}
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -45,17 +44,17 @@ services:
     networks:
       - inception
     environment:
-      - DOMAIN_NAME=${DOMAIN_NAME}
-      - WP_ADMIN_USER=${WP_ADMIN_USER}
-      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD}
-      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
-      - WP_USER=${WP_USER}
-      - WP_USER_PASSWORD=${WP_USER_PASSWORD}
-      - WP_USER_EMAIL=${WP_USER_EMAIL}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-      - MYSQL_HOST=${MYSQL_HOST}
+      - DOMAIN_NAME=${DOMAIN_NAME:?DOMAIN_NAME is required}
+      - WP_ADMIN_USER=${WP_ADMIN_USER:?WP_ADMIN_USER is required}
+      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD:?WP_ADMIN_PASSWORD is required}
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL:?WP_ADMIN_EMAIL is required}
+      - WP_USER=${WP_USER:?WP_USER is required}
+      - WP_USER_PASSWORD=${WP_USER_PASSWORD:?WP_USER_PASSWORD is required}
+      - WP_USER_EMAIL=${WP_USER_EMAIL:?WP_USER_EMAIL is required}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:?MYSQL_DATABASE is required}
+      - MYSQL_USER=${MYSQL_USER:?MYSQL_USER is required}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD:?MYSQL_PASSWORD is required}
+      - MYSQL_HOST=${MYSQL_HOST:?MYSQL_HOST is required}
     restart: unless-stopped
 
 
