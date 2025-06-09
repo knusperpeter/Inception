@@ -48,3 +48,4 @@ EOSQL
     mysqladmin -uroot -p${MYSQL_ROOT_PASSWORD} shutdown
 fi
 
+exec "$@"

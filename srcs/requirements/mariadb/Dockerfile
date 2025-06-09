@@ -19,6 +19,9 @@ RUN mkdir -p /run/mysqld && \
     chown -R mysql:mysql /var/lib/mysql && \
     chmod +x /usr/local/bin/init.sh
 
+#VOLUME /var/lib/mysql
+
 # Combined initialization and server start
 ENTRYPOINT ["/usr/local/bin/init.sh"]
+
 CMD ["mysqld", "--user=mysql", "--console"]

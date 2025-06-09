@@ -22,8 +22,6 @@ fclean:    down
 	cd srcs && docker volume prune -f
 
 
-fclean-all:	fclean
+dead:	fclean
 	sudo rm -rf ~/data/mariadb/*
 	sudo rm -rf ~/data/wordpress/*
-
-re:    fclean build up

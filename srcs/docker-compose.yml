@@ -4,7 +4,7 @@ services:
     build: ./requirements/mariadb
     image: mariadb
     container_name: mariadb
-    expose: 
+    expose:
       - "3306"
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
@@ -17,11 +17,6 @@ services:
     networks:
       - inception
     restart: unless-stopped
-#    healthcheck:
-#      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-#      interval: 5s
-#      timeout: 5s
-#      retries: 5
 
   nginx:
     build: ./requirements/nginx
